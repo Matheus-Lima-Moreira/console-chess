@@ -1,0 +1,53 @@
+# Build results
+bin/
+obj/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+
+# Visual Studio Code
+.vscode/
+
+# Rider
+.idea/
+*.sln.iml
+
+# ASP.NET Core local config files
+appsettings.*.json
+
+# Dotnet-specific
+*.dbmdl
+*.pdb
+*.cache
+*.log
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# NuGet
+*.nupkg
+packages/
+.nuget/
+
+# Backup & temp files
+*.bak
+*.tmp
+*.temp
+*.old
+
+# Logs
+*.log
+
+# OS junk files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Global configuration files
+global.json
