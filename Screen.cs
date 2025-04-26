@@ -1,7 +1,9 @@
 using board;
 
-namespace console_chess {
-  class Screen {
+namespace console_chess
+{
+  class Screen
+  {
     public static void PrintBoard(Board board)
     {
       for (int r = 0; r < board.Rows; r++)

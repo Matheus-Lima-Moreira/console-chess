@@ -1,5 +1,7 @@
-namespace board {
-  class Board {
+namespace board
+{
+  class Board
+  {
     public int Rows { get; set; }
     public int Columns { get; set; }
     private Piece[,] Pieces;
@@ -14,6 +16,11 @@ namespace board {
     public Piece? GetPiece(Position position)
     {
       return Pieces[position.Row, position.Column];
+    }
+
+    public void PlacePiece(Piece piece, Position position)
+    {
+      Pieces[position.Row, position.Column] = piece;
     }
   }
 }
