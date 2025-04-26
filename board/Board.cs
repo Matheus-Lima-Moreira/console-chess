@@ -4,7 +4,7 @@ namespace board
   {
     public int Rows { get; set; }
     public int Columns { get; set; }
-    private Piece[,] Pieces;
+    private Piece?[,] Pieces;
 
     public Board(int rows, int columns)
     {
@@ -26,6 +26,18 @@ namespace board
       }
       Pieces[position.Row, position.Column] = piece;
       piece.Position = position;
+    }
+
+    public Piece? RemovePiece(Position position)
+    {
+      if (GetPiece(position) == null)
+      {
+        return null;
+      }
+      Piece piece = GetPiece(position)!;
+      piece.Position = null;
+      Pieces[position.Row, position.Column] = null;
+      return piece;
     }
 
     public bool IsValidPosition(Position position)

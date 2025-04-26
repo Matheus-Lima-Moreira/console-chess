@@ -9,17 +9,23 @@ namespace console_chess
         {
             try
             {
-                Board board = new(8, 8);
+                Match match = new Match();
 
-                board.PlacePiece(new King(board, Color.Black), new board.Position(0, 5));
-                board.PlacePiece(new Tower(board, Color.Black), new board.Position(0, 7));
-                board.PlacePiece(new Tower(board, Color.Black), new board.Position(0, 0));
+                while (!match.finished)
+                {
+                    Console.Clear();
+                    Screen.PrintBoard(match.board);
 
-                board.PlacePiece(new King(board, Color.White), new board.Position(7, 5));
-                board.PlacePiece(new Tower(board, Color.White), new board.Position(7, 7));
-                board.PlacePiece(new Tower(board, Color.White), new board.Position(7, 0));
+                    Console.WriteLine();
+                    Console.Write("Origin: ");
+                    board.Position origin = Screen.ReadChessPosition().ToBoardPosition();
 
-                Screen.PrintBoard(board);
+                    Console.Write("Destination: ");
+                    board.Position destination = Screen.ReadChessPosition().ToBoardPosition();
+
+                    match.ExecuteMove(origin, destination);
+                }
+                Console.Clear();
             }
             catch (BoardException e)
             {

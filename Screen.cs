@@ -40,5 +40,13 @@ namespace console_chess
         Console.Write(" ");
       }
     }
+
+    public static chess.Position ReadChessPosition()
+    {
+      string s = Console.ReadLine()!;
+      char column = s[0];
+      int row = int.Parse(s[1] + "");
+      return new chess.Position(column, row);
+    }
   }
 }
