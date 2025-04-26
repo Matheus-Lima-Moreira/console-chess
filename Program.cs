@@ -13,22 +13,35 @@ namespace console_chess
 
                 while (!match.finished)
                 {
-                    Console.Clear();
-                    Screen.PrintBoard(match.board);
+                    try
+                    {
+                        Console.Clear();
+                        Screen.PrintBoard(match.board);
+                        Console.WriteLine();
+                        Console.WriteLine($"Turn: {match.turn}");
+                        Console.WriteLine($"Waiting for player: {match.currentPlayer}");
 
-                    Console.WriteLine();
-                    Console.Write("Origin: ");
-                    board.Position origin = Screen.ReadChessPosition().ToBoardPosition();
+                        Console.WriteLine();
+                        Console.Write("Origin: ");
+                        board.Position origin = Screen.ReadChessPosition().ToBoardPosition();
+                        match.ValidateOriginPosition(origin);
 
-                    Console.Clear();
-                    bool[,] possibleMoves = match.board.GetPiece(origin)!.PossibleMoves();
-                    Screen.PrintBoard(match.board, possibleMoves);
+                        Console.Clear();
+                        bool[,] possibleMoves = match.board.GetPiece(origin)!.PossibleMoves();
+                        Screen.PrintBoard(match.board, possibleMoves);
 
-                    Console.WriteLine();
-                    Console.Write("Destination: ");
-                    board.Position destination = Screen.ReadChessPosition().ToBoardPosition();
+                        Console.WriteLine();
+                        Console.Write("Destination: ");
+                        board.Position destination = Screen.ReadChessPosition().ToBoardPosition();
+                        match.ValidateDestinationPosition(origin, destination);
 
-                    match.ExecuteMove(origin, destination);
+                        match.RealizeMove(origin, destination);
+                    }
+                    catch (BoardException e)
+                    {
+                        Console.WriteLine(e.Message);
+                        Console.ReadLine();
+                    }
                 }
                 Console.Clear();
             }
