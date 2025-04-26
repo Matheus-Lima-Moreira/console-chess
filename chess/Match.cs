@@ -31,9 +31,13 @@ namespace chess
     {
       board.PlacePiece(new King(board, Color.White), new Position('c', 1).ToBoardPosition());
       board.PlacePiece(new King(board, Color.White), new Position('c', 2).ToBoardPosition());
+      board.PlacePiece(new Tower(board, Color.White), new Position('d', 1).ToBoardPosition());
+      board.PlacePiece(new Tower(board, Color.White), new Position('d', 2).ToBoardPosition());
 
       board.PlacePiece(new King(board, Color.Black), new Position('c', 7).ToBoardPosition());
       board.PlacePiece(new King(board, Color.Black), new Position('c', 8).ToBoardPosition());
+      board.PlacePiece(new King(board, Color.Black), new Position('d', 7).ToBoardPosition());
+      board.PlacePiece(new King(board, Color.Black), new Position('d', 8).ToBoardPosition());
     }
   }
 }

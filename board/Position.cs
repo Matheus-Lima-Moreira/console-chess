@@ -15,5 +15,11 @@ namespace board
     {
       return Row + ", " + Column;
     }
+
+    public void SetValues(int row, int column)
+    {
+      Row = row;
+      Column = column;
+    }
   }
 }

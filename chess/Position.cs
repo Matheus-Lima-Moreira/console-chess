@@ -1,5 +1,3 @@
-using board;
-
 namespace chess
 {
   class Position
@@ -9,8 +7,8 @@ namespace chess
 
     public Position(char column, int row)
     {
-      this.Column = column;
-      this.Row = row;
+      Column = column;
+      Row = row;
     }
 
     public override string ToString()
