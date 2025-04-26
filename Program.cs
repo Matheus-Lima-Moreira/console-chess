@@ -7,12 +7,20 @@ namespace console_chess
     {
         static void Main(string[] args)
         {
-            Board board = new(8, 8);
+            try
+            {
+                Board board = new(8, 8);
 
-            board.PlacePiece(new King(board, Color.Black), new Position(0, 0));
-            board.PlacePiece(new Tower(board, Color.Black), new Position(1, 0));
+                board.PlacePiece(new King(board, Color.Black), new Position(0, 0));
+                board.PlacePiece(new Tower(board, Color.Black), new Position(0, 0));
 
-            Screen.PrintBoard(board);
+                Screen.PrintBoard(board);
+            }
+            catch (BoardException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
             Console.ReadLine();
         }
     }
