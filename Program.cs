@@ -1,5 +1,5 @@
 ﻿using board;
-using Chess;
+using chess;
 
 namespace console_chess
 {
@@ -11,8 +11,8 @@ namespace console_chess
             {
                 Board board = new(8, 8);
 
-                board.PlacePiece(new King(board, Color.Black), new Position(0, 0));
-                board.PlacePiece(new Tower(board, Color.Black), new Position(0, 0));
+                board.PlacePiece(new King(board, Color.Black), new board.Position(0, 0));
+                board.PlacePiece(new Tower(board, Color.Black), new board.Position(0, 7));
 
                 Screen.PrintBoard(board);
             }

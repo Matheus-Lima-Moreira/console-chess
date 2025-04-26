@@ -1,6 +1,6 @@
 using board;
 
-namespace Chess
+namespace chess
 {
   class King : Piece
   {
