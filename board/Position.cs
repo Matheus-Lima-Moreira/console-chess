@@ -7,7 +7,6 @@ namespace board
 
     public Position(int row, int column)
     {
-      ;
       Row = row;
       Column = column;
     }
