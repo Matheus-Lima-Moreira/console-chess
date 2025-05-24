@@ -1,9 +1,43 @@
 using board;
+using chess;
 
 namespace console_chess
 {
   class Screen
   {
+    public static void PrintMatch(Match match)
+    {
+      PrintBoard(match.Board);
+      PrintCapturedPieces(match);
+      Console.WriteLine();
+      Console.WriteLine($"Turn: {match.Turn}");
+      Console.WriteLine($"Waiting for player: {match.CurrentPlayer}");
+    }
+
+    public static void PrintCapturedPieces(Match match)
+    {
+      Console.WriteLine("Captured pieces:");
+      Console.Write("White: ");
+      PrintSet(match.GetCapturedPieces(Color.White));
+      Console.WriteLine();
+      Console.Write("Black: ");
+      ConsoleColor aux = Console.ForegroundColor;
+      Console.ForegroundColor = ConsoleColor.Yellow;
+      PrintSet(match.GetCapturedPieces(Color.Black));
+      Console.ForegroundColor = aux;
+      Console.WriteLine();
+    }
+
+    public static void PrintSet(HashSet<Piece> set)
+    {
+      Console.Write("[");
+      foreach (Piece p in set)
+      {
+        Console.Write(p + " ");
+      }
+      Console.Write("]");
+    }
+
     public static void PrintBoard(Board board)
     {
       for (int r = 0; r < board.Rows; r++)
@@ -11,7 +45,7 @@ namespace console_chess
         Console.Write(8 - r + " ");
         for (int c = 0; c < board.Columns; c++)
         {
-          PrintPiece(board.GetPiece(new Position(r, c)));
+          PrintPiece(board.GetPiece(new board.Position(r, c)));
         }
         Console.WriteLine();
       }
@@ -37,7 +71,7 @@ namespace console_chess
             Console.BackgroundColor = originalBackground;
           }
 
-          PrintPiece(board.GetPiece(new Position(r, c)));
+          PrintPiece(board.GetPiece(new board.Position(r, c)));
 
           Console.BackgroundColor = originalBackground;
         }

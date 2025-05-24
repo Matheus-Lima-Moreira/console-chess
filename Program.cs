@@ -11,15 +11,12 @@ namespace console_chess
             {
                 Match match = new Match();
 
-                while (!match.finished)
+                while (!match.Finished)
                 {
                     try
                     {
                         Console.Clear();
-                        Screen.PrintBoard(match.board);
-                        Console.WriteLine();
-                        Console.WriteLine($"Turn: {match.turn}");
-                        Console.WriteLine($"Waiting for player: {match.currentPlayer}");
+                        Screen.PrintMatch(match);
 
                         Console.WriteLine();
                         Console.Write("Origin: ");
@@ -27,8 +24,8 @@ namespace console_chess
                         match.ValidateOriginPosition(origin);
 
                         Console.Clear();
-                        bool[,] possibleMoves = match.board.GetPiece(origin)!.PossibleMoves();
-                        Screen.PrintBoard(match.board, possibleMoves);
+                        bool[,] possibleMoves = match.Board.GetPiece(origin)!.PossibleMoves();
+                        Screen.PrintBoard(match.Board, possibleMoves);
 
                         Console.WriteLine();
                         Console.Write("Destination: ");

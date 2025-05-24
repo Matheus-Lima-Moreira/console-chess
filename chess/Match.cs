@@ -4,74 +4,113 @@ namespace chess
 {
   class Match
   {
-    public Board board { get; private set; }
-    public int turn { get; private set; }
-    public Color currentPlayer { get; private set; }
-    public bool finished { get; private set; }
+    public Board Board { get; private set; }
+    public int Turn { get; private set; }
+    public Color CurrentPlayer { get; private set; }
+    public bool Finished { get; private set; }
+    public HashSet<Piece> Pieces { get; set; }
+    public HashSet<Piece> CapturedPieces { get; set; }
 
     public Match()
     {
-      board = new Board(8, 8);
-      turn = 1;
-      currentPlayer = Color.White;
-      finished = false;
+      Board = new Board(8, 8);
+      Turn = 1;
+      CurrentPlayer = Color.White;
+      Finished = false;
+      Pieces = new HashSet<Piece>();
+      CapturedPieces = new HashSet<Piece>();
 
       PutPieces();
     }
 
     public void ExecuteMove(board.Position origin, board.Position destination)
     {
-      Piece? piece = board.RemovePiece(origin);
+      Piece? piece = Board.RemovePiece(origin);
       piece!.IncrementQtdMoves();
-      Piece? capturedPiece = board.RemovePiece(destination);
-      board.PlacePiece(piece, destination);
+      Piece? capturedPiece = Board.RemovePiece(destination);
+      Board.PlacePiece(piece, destination);
+      if (capturedPiece != null)
+      {
+        CapturedPieces.Add(capturedPiece);
+      }
+    }
+
+    public HashSet<Piece> GetCapturedPieces(Color color)
+    {
+      HashSet<Piece> aux = new HashSet<Piece>();
+      foreach (Piece p in CapturedPieces)
+      {
+        if (p.Color == color)
+        {
+          aux.Add(p);
+        }
+      }
+      return aux;
+    }
+
+    public HashSet<Piece> GetPiecesInGame(Color color)
+    {
+      HashSet<Piece> aux = new HashSet<Piece>();
+      foreach (Piece p in Pieces)
+      {
+        if (p.Color == color)
+        {
+          aux.Add(p);
+        }
+      }
+      aux.ExceptWith(GetCapturedPieces(color));
+      return aux;
+    }
+
+    public void PutNewPiece(char column, int row, Piece piece)
+    {
+      Board.PlacePiece(piece, new Position(column, row).ToBoardPosition());
+      Pieces.Add(piece);
     }
 
     public void PutPieces()
     {
-      board.PlacePiece(new King(board, Color.White), new Position('c', 1).ToBoardPosition());
-      board.PlacePiece(new King(board, Color.White), new Position('c', 2).ToBoardPosition());
-      board.PlacePiece(new King(board, Color.White), new Position('b', 1).ToBoardPosition());
-      board.PlacePiece(new King(board, Color.White), new Position('b', 2).ToBoardPosition());
-      board.PlacePiece(new Tower(board, Color.White), new Position('d', 1).ToBoardPosition());
-      board.PlacePiece(new Tower(board, Color.White), new Position('d', 2).ToBoardPosition());
+      PutNewPiece('c', 1, new King(Board, Color.White));
+      PutNewPiece('c', 2, new King(Board, Color.White));
+      PutNewPiece('b', 1, new Tower(Board, Color.White));
+      PutNewPiece('b', 2, new Tower(Board, Color.White));
 
-      board.PlacePiece(new King(board, Color.Black), new Position('c', 7).ToBoardPosition());
-      board.PlacePiece(new King(board, Color.Black), new Position('c', 8).ToBoardPosition());
-      board.PlacePiece(new King(board, Color.Black), new Position('d', 7).ToBoardPosition());
-      board.PlacePiece(new King(board, Color.Black), new Position('d', 8).ToBoardPosition());
+      PutNewPiece('c', 7, new Tower(Board, Color.Black));
+      PutNewPiece('c', 8, new Tower(Board, Color.Black));
+      PutNewPiece('d', 7, new Tower(Board, Color.White));
+      PutNewPiece('d', 8, new Tower(Board, Color.White));
     }
 
     public void RealizeMove(board.Position origin, board.Position destination)
     {
       ExecuteMove(origin, destination);
-      turn++;
+      Turn++;
       ChangePlayer();
     }
 
     public void ChangePlayer()
     {
-      if (currentPlayer == Color.White)
+      if (CurrentPlayer == Color.White)
       {
-        currentPlayer = Color.Black;
+        CurrentPlayer = Color.Black;
       }
       else
       {
-        currentPlayer = Color.White;
+        CurrentPlayer = Color.White;
       }
     }
 
     public void ValidateOriginPosition(board.Position position)
     {
-      if (board.GetPiece(position) == null)
+      if (Board.GetPiece(position) == null)
       {
         throw new BoardException("No piece on the origin position!");
       }
-      if (currentPlayer != board.GetPiece(position)!.Color)
+      if (CurrentPlayer != Board.GetPiece(position)!.Color)
       {
         throw new BoardException("The chosen piece is not yours!");
       }
-      if (!board.GetPiece(position)!.IsThereAnyPossibleMove())
+      if (!Board.GetPiece(position)!.IsThereAnyPossibleMove())
       {
         throw new BoardException("There are no possible moves for the chosen piece!");
       }
@@ -79,7 +118,7 @@ namespace chess
 
     public void ValidateDestinationPosition(board.Position origin, board.Position destination)
     {
-      if (!board.GetPiece(origin)!.CanMoveTo(destination))
+      if (!Board.GetPiece(origin)!.CanMoveTo(destination))
       {
         throw new BoardException("Invalid destination position!");
       }
