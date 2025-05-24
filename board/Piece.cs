@@ -20,6 +20,11 @@ namespace board
       QtdMoves++;
     }
 
+    public void DecrementQtdMoves()
+    {
+      QtdMoves--;
+    }
+
     public bool IsThereAnyPossibleMove()
     {
       bool[,] mat = PossibleMoves();
