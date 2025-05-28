@@ -8,13 +8,23 @@ namespace console_chess
     public static void PrintMatch(Match match)
     {
       PrintBoard(match.Board);
+      Console.WriteLine();
       PrintCapturedPieces(match);
       Console.WriteLine();
       Console.WriteLine($"Turn: {match.Turn}");
-      Console.WriteLine($"Waiting for player: {match.CurrentPlayer}");
-      if (match.Check)
+
+      if (!match.Finished)
       {
-        Console.WriteLine("CHECK!");
+        Console.WriteLine($"Waiting for player: {match.CurrentPlayer}");
+        if (match.Check)
+        {
+          Console.WriteLine("CHECK!");
+        }
+      }
+      else
+      {
+        Console.WriteLine("CHECKMATE!");
+        Console.WriteLine($"Winner: {match.CurrentPlayer}");
       }
     }
 

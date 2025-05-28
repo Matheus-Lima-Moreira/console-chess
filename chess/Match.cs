@@ -77,7 +77,7 @@ namespace chess
       return aux;
     }
 
-    private Color GetOpponent(Color color)
+    private static Color GetOpponent(Color color)
     {
       if (color == Color.White)
       {
@@ -119,6 +119,37 @@ namespace chess
       return false;
     }
 
+    public bool IsCheckMate(Color color)
+    {
+      if (!IsCheck(color))
+      {
+        return false;
+      }
+      foreach (Piece p in GetPiecesInGame(color))
+      {
+        bool[,] mat = p.PossibleMoves();
+        for (int i = 0; i < Board.Rows; i++)
+        {
+          for (int j = 0; j < Board.Columns; j++)
+          {
+            if (mat[i, j])
+            {
+              board.Position origin = p.Position!;
+              board.Position destination = new(i, j);
+              Piece? capturedPiece = ExecuteMove(origin, destination);
+              bool isCheck = IsCheck(color);
+              UndoMove(origin, destination, capturedPiece);
+              if (!isCheck)
+              {
+                return false;
+              }
+            }
+          }
+        }
+      }
+      return true;
+    }
+
     public void PutNewPiece(char column, int row, Piece piece)
     {
       Board.PlacePiece(piece, new Position(column, row).ToBoardPosition());
@@ -127,13 +158,12 @@ namespace chess
 
     public void PutPieces()
     {
-      PutNewPiece('a', 1, new King(Board, Color.White));
+      PutNewPiece('c', 1, new King(Board, Color.White));
       PutNewPiece('b', 1, new Tower(Board, Color.White));
-      PutNewPiece('c', 1, new Tower(Board, Color.White));
+      PutNewPiece('h', 7, new Tower(Board, Color.White));
 
-      PutNewPiece('c', 6, new King(Board, Color.Black));
-      PutNewPiece('c', 7, new Tower(Board, Color.Black));
-      PutNewPiece('c', 8, new Tower(Board, Color.Black));
+      PutNewPiece('a', 8, new King(Board, Color.Black));
+      PutNewPiece('b', 8, new Tower(Board, Color.Black));
     }
 
     public void RealizeMove(board.Position origin, board.Position destination)
@@ -155,8 +185,15 @@ namespace chess
         Check = false;
       }
 
-      Turn++;
-      ChangePlayer();
+      if (IsCheckMate(GetOpponent(CurrentPlayer)))
+      {
+        Finished = true;
+      }
+      else
+      {
+        Turn++;
+        ChangePlayer();
+      }
     }
 
     public void ChangePlayer()
