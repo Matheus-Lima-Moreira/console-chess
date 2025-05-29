@@ -275,11 +275,24 @@ namespace chess
     public void RealizeMove(board.Position origin, board.Position destination)
     {
       Piece? capturedPiece = ExecuteMove(origin, destination);
+      Piece p = Board.GetPiece(destination)!;
 
       if (IsCheck(CurrentPlayer))
       {
         UndoMove(origin, destination, capturedPiece);
         throw new BoardException("You cannot put yourself in check!");
+      }
+
+      if (p is Pawn)
+      {
+        if ((p.Color == Color.White && destination.Row == 0) || (p.Color == Color.Black && destination.Row == 7))
+        {
+          p = Board.RemovePiece(destination)!;
+          Pieces.Remove(p);
+          Piece newPiece = new Queen(Board, p.Color);
+          Board.PlacePiece(newPiece, destination);
+          Pieces.Add(newPiece);
+        }
       }
 
       if (IsCheck(GetOpponent(CurrentPlayer)))
@@ -301,7 +314,6 @@ namespace chess
         ChangePlayer();
       }
 
-      Piece p = Board.GetPiece(destination)!;
       if (p is Pawn && (destination.Row == origin.Row - 2 || destination.Row == origin.Row + 2))
       {
         VulnerableEnPassant = p;
